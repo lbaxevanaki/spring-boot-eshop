@@ -16,8 +16,10 @@ Not fully unit tested but i have tried to provide examples of tests on all level
 
 Running service locally using docker
 ------------------------------------
+In the root of the project please run :
 mvnw install dockerfile:build
-#mvnw dockerfile:push
+
+Then in order to run it in a docker container please type:
 docker run -p 8080:8080 lbaxevanaki/eshop-web-service
 
 
