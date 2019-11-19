@@ -1,9 +1,9 @@
 package com.lbaxevanaki.eshop.product;
 
-import static org.hamcrest.CoreMatchers.any;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+
+import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -37,17 +37,36 @@ class ProductControllerTest {
 	private ProductService mockService;
 
 	@Test
-	public void save_emptyProduct_emptyPrice_400() throws Exception {
+	public void save_Product() throws Exception {
+		Product savedProduct = new Product();
+		
+		doReturn(savedProduct).when(mockRepository).save(any(Product.class));  
 
-		String productInJson = "{\"name\":\"ABC\"}";
+		String productInJson = "{\r\n" + 
+				"  \"id\": 0,\r\n" + 
+				"  \"name\": \"Product D\",\r\n" + 
+				"  \"price\": 2000\r\n" + 
+				"}";
+
+		mockMvc.perform(post("/api/v1/products").content(productInJson).header(HttpHeaders.CONTENT_TYPE,
+				MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
+
+		//verify(mockService, times(0)).addProduct(any(Product.class));
+
+	}
+	@Test
+	public void save_emptyProduct_no_name_400() throws Exception {
+
+		String productInJson = "{\"id\":\"0\", \"price\":\"1000\"}";
 
 		mockMvc.perform(post("/api/v1/products").content(productInJson).header(HttpHeaders.CONTENT_TYPE,
 				MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isBadRequest())
-				.andExpect(jsonPath("$.timestamp", is(notNullValue()))).andExpect(jsonPath("$.status", is(400)))
+				.andExpect(jsonPath("$.timestamp", is(notNullValue())))
+				.andExpect(jsonPath("$.status", is(400)))
 				.andExpect(jsonPath("$.errors").isArray())
-				.andExpect(jsonPath("$.errors", hasItem("Please provide a price")));
+				.andExpect(jsonPath("$.errors", hasItem("Please provide a name")));
 
-		verify(mockService, times(0)).addProduct((Product) any(Product.class));
+		verify(mockService, times(0)).addProduct(any(Product.class));
 
 	}
 

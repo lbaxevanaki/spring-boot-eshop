@@ -58,9 +58,13 @@ public class ProductController {
 	public ResponseEntity<Object> createProduct(
 			@ApiParam(value = "Product object to store in database table", required = true) @Valid @RequestBody Product product) {
 		Product savedProduct = productService.addProduct(product);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(savedProduct.getId()).toUri();
-		return ResponseEntity.created(location).build();
+		if(savedProduct != null) {
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+					.buildAndExpand(savedProduct.getId()).toUri();
+			return ResponseEntity.created(location).build();
+		}else {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 
 	@PutMapping(value = "/{id}")

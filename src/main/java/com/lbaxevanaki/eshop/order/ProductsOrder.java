@@ -130,7 +130,9 @@ public class ProductsOrder {
 	
 	public void updateOrderItemsPrice() {
 		// update the order item price with the current product price
-		orderItems.forEach(i -> i.setPrice(i.getProduct().getPrice()));
+		orderItems.stream().filter((i) -> i.getProduct()!=null).forEach(i -> i.setPrice(i.getProduct().getPrice()));
+		
+	
 	}
 
 }

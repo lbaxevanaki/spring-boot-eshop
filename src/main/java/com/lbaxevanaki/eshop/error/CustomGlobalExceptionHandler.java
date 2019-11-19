@@ -23,7 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-	 private static final Logger log = LoggerFactory.getLogger(CustomGlobalExceptionHandler.class);
+	 private static final Logger LOG = LoggerFactory.getLogger(CustomGlobalExceptionHandler.class);
 
     // error handle for @Valid
     @Override
@@ -31,6 +31,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                                                                   HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request) {
 
+    	LOG.error(ex.getMessage());
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", new Date());
         body.put("status", status.value());
@@ -43,7 +44,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
                 .collect(Collectors.toList());
 
         body.put("errors", errors);
-
+        
         return new ResponseEntity<>(body, headers, status);
 
     }
@@ -51,19 +52,29 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
  
     @ExceptionHandler({ EntityNotFoundException.class })
     protected ResponseEntity<Object> handleNotFound(final RuntimeException ex, final WebRequest request) {
+    	 Map<String, Object> body = new LinkedHashMap<>();
+         body.put("timestamp", new Date());
+         body.put("status", HttpStatus.NOT_FOUND);
+         
+         List<String> errors = new ArrayList<>(Arrays.asList(ex.getMessage(),  "Entity with id:"+ ex.getMessage() + " does not exist." ));
+         
+         body.put("errors", errors);
+         return new ResponseEntity<>(body,  new HttpHeaders(), HttpStatus.NOT_FOUND);
        
-        final ApiError apiError =  new ApiError(
-                HttpStatus.NOT_FOUND, ex.getMessage(), "Entity with id:"+ ex.getMessage() + " does not exist.");
-        		
-        return handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), request);
     }
    
     @ExceptionHandler({ Exception.class })
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
-        ApiError apiError = new ApiError(
-          HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
-        return new ResponseEntity<Object>(
-          apiError, new HttpHeaders(), apiError.getStatus());
+    	 LOG.error(ex.getMessage());
+    	 Map<String, Object> body = new LinkedHashMap<>();
+         body.put("timestamp", new Date());
+         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR);
+         
+         List<String> errors = new ArrayList<>(Arrays.asList(ex.getMessage(),  "Unexpected error occured."));
+         
+         body.put("errors", errors);
+         return new ResponseEntity<>(body,  new HttpHeaders(), HttpStatus.NOT_FOUND);
+      
     }
     
 }

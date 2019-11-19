@@ -59,8 +59,12 @@ public class ProductsOrderController {
 	@PostMapping
 	public ResponseEntity<Object> createOrder(@ApiParam(value = "Order object including ist order items to store in database table", required = true) @Valid @RequestBody ProductsOrder order) {
 		ProductsOrder savedOrder = orderService.addOrder(order);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedOrder.getId()).toUri();
-		return ResponseEntity.created(location).build();
+		if(savedOrder != null) {
+			URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedOrder.getId()).toUri();
+			return ResponseEntity.created(location).build();
+		}else{
+			return ResponseEntity.badRequest().build();
+		}
 	}
 	
 	@ApiOperation(value = "Update an order and its order items")
