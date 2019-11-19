@@ -1,5 +1,25 @@
 # spring-boot-eshop
-eShop Web Service using Spring Boot Rest Controller
+
+web service persistence state
+-------------------------------
+In this sample application, I am using in-memory H2 database.
+For porting this application to stage  or production environments we would need a file based database such as mysql.
+This can  that can be easily configured by adding the proper dependency and configuration settings There is no need to change the code.
+
+REST API Documentation
+----------------------
+REST API documentation generated via swagger and available in http://localhost:8080/swagger-ui.html
+
+Unit Tests
+-----------
+Not fully unit tested but i have tred to pride an example for a controller and a service
+
+Running service locally using docker
+------------------------------------
+mvnw install dockerfile:build
+#mvnw dockerfile:push
+docker run -p 8080:8080 springio/eshop-web-service
+
 
 Adding Authentication to the service
 -------------------------------------
