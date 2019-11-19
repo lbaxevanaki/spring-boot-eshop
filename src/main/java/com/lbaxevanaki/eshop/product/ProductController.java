@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -51,12 +50,7 @@ public class ProductController {
 	})
 	public ResponseEntity<Object> getProduct(
 			@ApiParam(value = "Product id", required = true) @Min(1) @PathVariable Long id) {
-		try {
 			return ResponseEntity.ok(productService.getProduct(id));
-		} catch (EntityNotFoundException e) {
-			return new ResponseEntity<>("Invalid order id " + id, HttpStatus.NOT_FOUND);
-		}
-
 	}
 
 	@ApiOperation(value = "Create a new product ", response = Product.class)

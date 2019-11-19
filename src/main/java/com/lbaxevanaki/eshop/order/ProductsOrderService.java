@@ -30,11 +30,13 @@ public class ProductsOrderService {
 	}
 	
 	public ProductsOrder addOrder(ProductsOrder order) {
+		order.updateOrderItemsPrice();
 		ProductsOrder savedOrder = productsOrderRepository.save(order);
 		return savedOrder;
 	}
 	
 	public void updateOrder(ProductsOrder order) {
+		order.updateOrderItemsPrice();
 		productsOrderRepository.save(order);	
 	}
 
