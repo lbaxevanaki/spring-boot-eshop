@@ -12,14 +12,12 @@ REST API documentation generated via swagger and available in http://localhost:8
 
 Unit Tests
 -----------
-Not fully unit tested but i have tred to pride an example for a controller and a service
+Not fully unit tested but i have tried to provide examples of tests on all levels, for instance for controllers and a services and plain unit tests for utility methods.
 
 Running service locally using docker
 ------------------------------------
 mvnw install dockerfile:build
-
 #mvnw dockerfile:push
-
 docker run -p 8080:8080 lbaxevanaki/eshop-web-service
 
 
@@ -44,13 +42,14 @@ We can still use Spring Cloud's interesting features mainly through the Spring C
 Spring Cloud Kubernetes provide Spring Cloud common interfaces implementations to consume Kubernetes native services, providing integration of Spring Cloud/Spring Boot applications running 
 inside Kubernetes.
 
-Kubernetes provides a resource named ConfigMap to externalize the parameters to pass to your application in the form of key-value pairs or embedded application.properties|yaml files. 
+Kubernetes provides a resource named ConfigMap to externalize the parameters to pass to the application in the form of key-value pairs or embedded application.properties|yaml files. 
 The Spring Cloud Kubernetes Config project makes Kubernetes `ConfigMap`s available during application bootstrapping and triggers hot reloading of beans or Spring context when changes 
 are detected on observed `ConfigMap`s.
 
+
 Making the service redundant we would need to put all the service instance behind a load balancer.Spring Cloud client applications calling a microservice should be interested on relying on a 
 client load-balancing feature in order to automatically discover at which endpoint(s) it can reach a given service. This mechanism has been implemented within the Spring Cloud Kubernetes Ribbon
-where a Kubernetes  client will populate a Ribbon ServerList  containing information about such endpoints.
+where a Kubernetes client will populate a Ribbon ServerList containing information about such endpoints.
 
-Moreover, We would need to think about the persistence layer. Should we use a central/shared database or not? Is it possible to to somehow segregate  the data? By location or oather way.
-For authentication, an AUTH2 token based scheme would be appropriate
+Moreover, We would need to think about the persistence layer. Should we use a central/shared database or not? Is it possible to to somehow segregate  the data? By location or another way.
+For authentication, an AUTH2 token based scheme would be appropriate.
