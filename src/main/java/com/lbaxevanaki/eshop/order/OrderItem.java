@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.lbaxevanaki.eshop.product.Product;
@@ -27,6 +28,7 @@ public class OrderItem {
 	@Column(nullable=false)
 	@NotNull
 	@ApiModelProperty(notes = "The quantity of the product that has been ordered ")
+	@Min(1)
 	private Short quantity = new Short((short) 0);
 	
 	@Column(nullable=false)
