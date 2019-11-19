@@ -17,8 +17,10 @@ Not fully unit tested but i have tred to pride an example for a controller and a
 Running service locally using docker
 ------------------------------------
 mvnw install dockerfile:build
+
 #mvnw dockerfile:push
-docker run -p 8080:8080 springio/eshop-web-service
+
+docker run -p 8080:8080 lbaxevanaki/eshop-web-service
 
 
 Adding Authentication to the service
